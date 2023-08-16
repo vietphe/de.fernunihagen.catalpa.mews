@@ -1,6 +1,8 @@
 package de.fernunihagen.d2l2.mews.structures;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -76,13 +78,21 @@ public class SE_SpellingMistake extends StructureExtractor {
 			DocumentMetaData meta = JCasUtil.selectSingle(aJCas, DocumentMetaData.class);
 			id = meta.getDocumentId();
 		}
-//		System.out.println(id);		
+		System.out.println(id);		
+		Set<Integer> offsets = new HashSet<>();
 		Collection<GrammarAnomaly> gas = JCasUtil.select(aJCas, GrammarAnomaly.class);
-		
+		loop:
 		for (GrammarAnomaly g : gas) {
+			System.out.println(g);
+			System.out.println("----------------------------------------");
 			int begin = g.getBegin();
 			String description = g.getDescription();
 			String coveredText = g.getCoveredText();
+			// löst die doppelte Annotation
+			if(offsets.contains(begin)) {
+				continue loop;
+			}
+			offsets.add(begin);
 			
 			Matcher spellingMistakeM1 = spellingMistakeP1.matcher(description);
 			Matcher spellingMistakeM2 = spellingMistakeP2.matcher(description);
@@ -128,7 +138,8 @@ public class SE_SpellingMistake extends StructureExtractor {
 					int endOffsetOfSuggestionWord = description.indexOf("</suggestion>");
 					String suggestionWord = description.substring(beginOffsetOfSuggestionWord, endOffsetOfSuggestionWord);
 					int levenshteinDistance = LevenshteinDistance.getDefaultInstance().apply(suggestionWord, coveredText);
-					if(levenshteinDistance == 1) {
+					System.out.println(levenshteinDistance);
+					if(levenshteinDistance <= 2) {
 						Structure s = new Structure(aJCas);
 						s.setBegin(begin);
 						s.setEnd(g.getEnd());
@@ -137,7 +148,7 @@ public class SE_SpellingMistake extends StructureExtractor {
 					}
 					
 				}
-			}						
+			}
 		}				
 	}	
 }

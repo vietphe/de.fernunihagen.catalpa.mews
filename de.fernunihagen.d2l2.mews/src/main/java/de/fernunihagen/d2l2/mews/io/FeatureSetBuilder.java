@@ -17,6 +17,7 @@ import de.fernunihagen.d2l2.mews.features.basic.FE_AvgNrOfCompoundPerToken;
 import de.fernunihagen.d2l2.mews.features.basic.FE_AvgNrOfFiniteVerb;
 import de.fernunihagen.d2l2.mews.features.basic.FE_AvgNrOfNounPhrasesPerSentence;
 import de.fernunihagen.d2l2.mews.features.basic.FE_AvgNrOfTokensPerSentence;
+import de.fernunihagen.d2l2.mews.features.basic.FE_CoarseGrainedPOSTagRatio;
 import de.fernunihagen.d2l2.mews.features.basic.FE_CommaRatio;
 import de.fernunihagen.d2l2.mews.features.basic.FE_FrequencyBandDeReWo;
 import de.fernunihagen.d2l2.mews.features.basic.FE_FrequencyEVPLevel;
@@ -66,7 +67,8 @@ public class FeatureSetBuilder {
 //		featureSet.addAll(getFrequencyRatio(jcas));
 //		featureSet.addAll(getNrOfParagraphs(jcas));
 //		featureSet.addAll(getErrors(jcas));
-		featureSet.addAll(getErrors2(jcas));
+//		featureSet.addAll(getErrors2(jcas));
+		featureSet.addAll(getCoarseGrainedPOSTagRatio(jcas));
 		
 		return featureSet;
 	}
@@ -158,6 +160,10 @@ public class FeatureSetBuilder {
 	}	
 	private static Set<Feature> getErrors2(JCas jcas) throws LiftFeatureExtrationException {
 		FE_Errors2 extractor = new FE_Errors2();
+		return extractor.extract(jcas);		
+	}	
+	private static Set<Feature> getCoarseGrainedPOSTagRatio(JCas jcas) throws LiftFeatureExtrationException {
+		FE_CoarseGrainedPOSTagRatio extractor = new FE_CoarseGrainedPOSTagRatio();
 		return extractor.extract(jcas);		
 	}	
 }
