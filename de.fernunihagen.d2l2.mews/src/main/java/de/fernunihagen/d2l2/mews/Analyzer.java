@@ -64,6 +64,7 @@ public class Analyzer extends JCasAnnotator_ImplBase {
 	@Override
 	public void process(JCas aJCas) throws AnalysisEngineProcessException {		
 		String id = "no Id";
+		String text = "no text";
 		Collection<Token> tokens = JCasUtil.select(aJCas, Token.class);
 //		int punct = 0;
 //		for (Token t : tokens) {
@@ -82,81 +83,83 @@ public class Analyzer extends JCasAnnotator_ImplBase {
 		if (JCasUtil.exists(aJCas, DocumentMetaData.class)){
 			DocumentMetaData meta = JCasUtil.selectSingle(aJCas, DocumentMetaData.class);
 			id = meta.getDocumentId();
-		}
-		System.out.println(id);			
-		Collection<GrammarAnomaly> gas = JCasUtil.select(aJCas, GrammarAnomaly.class);
-		for (GrammarAnomaly g : gas) {
-//			System.out.println(g.getDescription()+" - "+g.getCoveredText()+" - "+g.getBegin());
-//			grammarAnomaly.put(g.getBegin()+"-"+g.getEnd(), g.getDescription());
-//			gramm.add(g.getDescription());
-			String desciption = g.getDescription();
-			if(desciption.contains("Use a smart opening quote here.")||desciption.contains("Use a smart closing quote here.")) {
-				continue;
-			}
-			desciption= desciption.replaceAll(",", "(comma)");
-			desciption= desciption.replaceAll(";", "(semicolon)");
-			String example = g.getCoveredText();
-//			example= example.replaceAll(",", "(comma)");
-//			example= example.replaceAll(";", "(semicolon)");
-//			example= example.replaceAll("\"", "(quotesymbol)");
-			String strBefore="";
-			String strAfter = "";
-			if(g.getBegin()<=80) {
-				strBefore= aJCas.getDocumentText().substring(0,g.getBegin())+"*"+example+"*";
-			}else {
-				strBefore = "..." +aJCas.getDocumentText().substring(g.getBegin()-80,g.getBegin())+"*"+example+"*";
-			}
-			if(aJCas.getDocumentText().length()-g.getEnd()<=80) {
-				strAfter = aJCas.getDocumentText().substring(g.getEnd(), aJCas.getDocumentText().length());
-			}else {
-				strAfter = aJCas.getDocumentText().substring(g.getEnd(), g.getEnd()+80)+"...";
-			}
-			
-			String offset = "("+g.getBegin()+":"+g.getEnd()+")";
-			String exampleSentence = strBefore+strAfter;
-			exampleSentence= exampleSentence.replaceAll(",", "(comma)");
-			exampleSentence= exampleSentence.replaceAll(";", "(semicolon)");
-			exampleSentence= exampleSentence.replaceAll("\"", "(quotesymbol)");
-			System.out.println(exampleSentence);
-			arnomalyMap.put(desciption, exampleSentence);
-			arnomalyMap2.put(desciption, exampleSentence+" "+offset+" "+id);
-//			arnomalyList.add(desciption);
-			
+			text = meta.getDocumentTitle();
 		}
 		
-		try {
-			Set<Feature> fes = FeatureSetBuilder.buildFeatureSet(aJCas);
-			//add Annotation type
-			for (Feature f : fes) {
-				String name = f.getName();
-				FeatureType featureType = f.getType();
-				Object value = f.getValue();
-//				System.out.println(name+": "+value.toString());
-				FeatureAnnotationNumeric fa = new FeatureAnnotationNumeric(aJCas, 0, 0);
-				fa.setName(name);
-				fa.setValue(Double.valueOf(value.toString()));
-				fa.addToIndexes();
-			}
-		
-		} catch (LiftFeatureExtrationException e) {
-			
-			e.printStackTrace();
-		}
-//		writeCSVFile
-		try {
-			Set<Feature> fes = FeatureSetBuilder.buildFeatureSet(aJCas);
-			Map<String,String> featureMap = new HashMap<>();
-			featureMap.put("textId", id);
-			featureMap.put("length",String.valueOf(tokens.size()));
-			for (Feature feature : fes) {
-//				System.out.println(feature.getName()+feature.getValue().toString());
-				featureMap.put(feature.getName(), feature.getValue().toString()); //TODO: check casting type
-			}
-			featureList.add(featureMap);
-		} catch (LiftFeatureExtrationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		System.out.println(id);	
+//		Collection<GrammarAnomaly> gas = JCasUtil.select(aJCas, GrammarAnomaly.class);
+//		for (GrammarAnomaly g : gas) {
+////			System.out.println(g.getDescription()+" - "+g.getCoveredText()+" - "+g.getBegin());
+////			grammarAnomaly.put(g.getBegin()+"-"+g.getEnd(), g.getDescription());
+////			gramm.add(g.getDescription());
+//			String desciption = g.getDescription();
+//			if(desciption.contains("Use a smart opening quote here.")||desciption.contains("Use a smart closing quote here.")) {
+//				continue;
+//			}
+//			desciption= desciption.replaceAll(",", "(comma)");
+//			desciption= desciption.replaceAll(";", "(semicolon)");
+//			String example = g.getCoveredText();
+////			example= example.replaceAll(",", "(comma)");
+////			example= example.replaceAll(";", "(semicolon)");
+////			example= example.replaceAll("\"", "(quotesymbol)");
+//			String strBefore="";
+//			String strAfter = "";
+//			if(g.getBegin()<=80) {
+//				strBefore= aJCas.getDocumentText().substring(0,g.getBegin())+"*"+example+"*";
+//			}else {
+//				strBefore = "..." +aJCas.getDocumentText().substring(g.getBegin()-80,g.getBegin())+"*"+example+"*";
+//			}
+//			if(aJCas.getDocumentText().length()-g.getEnd()<=80) {
+//				strAfter = aJCas.getDocumentText().substring(g.getEnd(), aJCas.getDocumentText().length());
+//			}else {
+//				strAfter = aJCas.getDocumentText().substring(g.getEnd(), g.getEnd()+80)+"...";
+//			}
+//			
+//			String offset = "("+g.getBegin()+":"+g.getEnd()+")";
+//			String exampleSentence = strBefore+strAfter;
+//			exampleSentence= exampleSentence.replaceAll(",", "(comma)");
+//			exampleSentence= exampleSentence.replaceAll(";", "(semicolon)");
+//			exampleSentence= exampleSentence.replaceAll("\"", "(quotesymbol)");
+//			System.out.println(exampleSentence);
+//			arnomalyMap.put(desciption, exampleSentence);
+//			arnomalyMap2.put(desciption, exampleSentence+" "+offset+" "+id);
+////			arnomalyList.add(desciption);
+//			
+//		}
+//		
+//		try {
+//			Set<Feature> fes = FeatureSetBuilder.buildFeatureSet(aJCas);
+//			//add Annotation type
+//			for (Feature f : fes) {
+//				String name = f.getName();
+//				FeatureType featureType = f.getType();
+//				Object value = f.getValue();
+////				System.out.println(name+": "+value.toString());
+//				FeatureAnnotationNumeric fa = new FeatureAnnotationNumeric(aJCas, 0, 0);
+//				fa.setName(name);
+//				fa.setValue(Double.valueOf(value.toString()));
+//				fa.addToIndexes();
+//			}
+//		
+//		} catch (LiftFeatureExtrationException e) {
+//			
+//			e.printStackTrace();
+//		}
+////		writeCSVFile
+//		try {
+//			Set<Feature> fes = FeatureSetBuilder.buildFeatureSet(aJCas);
+//			Map<String,String> featureMap = new HashMap<>();
+//			featureMap.put("textId", id);
+//			featureMap.put("length",String.valueOf(tokens.size()));
+//			for (Feature feature : fes) {
+////				System.out.println(feature.getName()+feature.getValue().toString());
+//				featureMap.put(feature.getName(), feature.getValue().toString()); //TODO: check casting type
+//			}
+//			featureList.add(featureMap);
+//		} catch (LiftFeatureExtrationException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 
 		
 	}
@@ -167,7 +170,7 @@ public class Analyzer extends JCasAnnotator_ImplBase {
 //			exportGrammarAnormalyMap("D:\\HiWi\\LiFT\\output\\LoiSaiAD.csv", arnomalyMap2);
 //			exportGrammarAnormalyMap("D:\\HiWi\\LiFT\\output\\ErrorTE2.csv", arnomalyMap2);
 //			exportGrammarAnormaly("D:\\HiWi\\LiFT\\output\\AllErrorTE.csv", arnomalyList);
-		exportMultiHashMapListToCSV("D:\\HiWi\\LiFT\\output\\CoarsePOS.csv", featureList);
+//		exportMultiHashMapListToCSV("D:\\HiWi\\LiFT\\output\\CoarsePOS.csv", featureList);
 	}
 		
 	

@@ -34,7 +34,7 @@ public class BaseExperiment {
 	public static void main(String[] args) 
 			throws Exception
 	{
-		String inputPath = "D:\\HiWi\\LiFT\\MewsTest";
+		String inputPath = "D:\\HiWi\\LiFT\\MEWS\\AD";
 		runTextExample(inputPath, Language.English);
 //		runTextExample("src/test/resources/txt/news_de.txt", Language.German);
 	}
@@ -73,7 +73,7 @@ public class BaseExperiment {
 				spellingMistake,
 //				discourseReferents,
 //				finiteVerbs,
-//				analyzer,
+				analyzer,
 //				levenshteinAnalyzer
 				xmiWriter
 		);

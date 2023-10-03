@@ -70,8 +70,8 @@ public class TextReader extends JCasCollectionReader_ImplBase {
 				String id = f.getName();
 				String text = cleanString(String.join("\n", FileUtils.readLines(f,inputCharset)));
 //				System.out.println(String.join(" ", FileUtils.readLines(f,inputCharset)));
-				System.out.println(text);
-				System.out.println( );
+//				System.out.println(text);
+//				System.out.println( );
 				if (text.startsWith("missing data") || text.equals("")) {
 					continue;
 				}
