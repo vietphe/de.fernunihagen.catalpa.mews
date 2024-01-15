@@ -19,8 +19,7 @@ import de.fernunihagen.d2l2.mews.features.basic.FE_AvgNrOfNounPhrasesPerSentence
 import de.fernunihagen.d2l2.mews.features.basic.FE_AvgNrOfTokensPerSentence;
 import de.fernunihagen.d2l2.mews.features.basic.FE_CoarseGrainedPOSTagRatio;
 import de.fernunihagen.d2l2.mews.features.basic.FE_CommaRatio;
-import de.fernunihagen.d2l2.mews.features.basic.FE_FrequencyBandDeReWo;
-import de.fernunihagen.d2l2.mews.features.basic.FE_FrequencyEVPLevel;
+import de.fernunihagen.d2l2.mews.features.basic.FE_FrequencyEVP;
 import de.fernunihagen.d2l2.mews.features.basic.FE_LexicalDensity;
 import de.fernunihagen.d2l2.mews.features.basic.FE_LexicalVariation;
 import de.fernunihagen.d2l2.mews.features.basic.FE_NrDiscourseReferent;
@@ -36,8 +35,6 @@ import de.fernunihagen.d2l2.mews.features.basic.FE_TraditionalReadabilityMeasure
 import de.fernunihagen.d2l2.mews.features.basic.FE_TrigramCounter;
 import de.fernunihagen.d2l2.mews.features.basic.FE_TypeTokenRatio;
 import de.fernunihagen.d2l2.mews.features.basic.ReadabilityConfiguration;
-import de.fernunihagen.d2l2.mews.features.fachsprache.PassiveSentenceExtractor;
-import de.fernunihagen.d2l2.mews.features.fachsprache.SubstantivierungExtractor;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
 import de.tudarmstadt.ukp.dkpro.core.api.syntax.type.chunk.NC;
 import de.tudarmstadt.ukp.dkpro.core.api.syntax.type.chunk.PC;
@@ -147,7 +144,7 @@ public class FeatureSetBuilder {
 		return extractor.extract(jcas);		
 	}	
 	private static Set<Feature> getFrequencyRatio(JCas jcas) throws LiftFeatureExtrationException {
-		FE_FrequencyEVPLevel extractor = new FE_FrequencyEVPLevel();
+		FE_FrequencyEVP extractor = new FE_FrequencyEVP();
 		return extractor.extract(jcas);		
 	}	
 	private static Set<Feature> getNrOfParagraphs(JCas jcas) throws LiftFeatureExtrationException {

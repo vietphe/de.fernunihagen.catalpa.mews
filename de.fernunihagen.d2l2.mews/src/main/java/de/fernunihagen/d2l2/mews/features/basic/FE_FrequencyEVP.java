@@ -16,7 +16,7 @@ import de.fernunihagen.d2l2.mews.featureSettings.FeatureExtractor_ImplBase;
  * 
  * @author Viet Phe
  */
-public class FE_FrequencyEVPLevel extends FeatureExtractor_ImplBase{
+public class FE_FrequencyEVP extends FeatureExtractor_ImplBase{
 		
 	@Override
 	public Set<Feature> extract(JCas jcas) throws LiftFeatureExtrationException {

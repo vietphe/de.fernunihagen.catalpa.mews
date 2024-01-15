@@ -21,9 +21,8 @@ import de.fernunihagen.d2l2.mews.structures.SE_Connectives;
 import de.fernunihagen.d2l2.mews.structures.SE_DLTIntegrationCost;
 import de.fernunihagen.d2l2.mews.structures.SE_DiscourseReferent;
 import de.fernunihagen.d2l2.mews.structures.SE_FiniteVerb;
-import de.fernunihagen.d2l2.mews.structures.SE_FrequenciesDeReWo;
-import de.fernunihagen.d2l2.mews.structures.SE_FrequenciesGoogleWF;
 import de.fernunihagen.d2l2.mews.structures.SE_FrequencyEVP;
+import de.fernunihagen.d2l2.mews.structures.SE_LanguageTool;
 import de.fernunihagen.d2l2.mews.structures.SE_LanguageTool2;
 import de.fernunihagen.d2l2.mews.structures.SE_SpellingMistake;
 
@@ -67,13 +66,13 @@ public class BaseExperiment {
 		
 		SimplePipeline.runPipeline(reader, 
 				prepro,
-//				errors,
+				errors,
 //				frequencyEVP,
 //				connectivies,
-				spellingMistake,
+//				spellingMistake,
 //				discourseReferents,
 //				finiteVerbs,
-				analyzer,
+//				analyzer,
 //				levenshteinAnalyzer
 				xmiWriter
 		);
